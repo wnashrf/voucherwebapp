@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Avatar } from 'primereact/avatar';
@@ -15,7 +16,12 @@ import { Toast } from 'primereact/toast';
 import { getVouchers } from '../api/vouchers';
 import './Home.css';
 
-const navItems = ['Explore', 'Deals', 'Rewards', 'Wallet'];
+const navItems = [
+  { label: 'Explore', path: '/Home' },
+  { label: 'Deals', path: '/voucher-category' },
+  { label: 'Rewards', path: '#' },
+  { label: 'Wallet', path: '#' }
+];
 const categoryIcons = {
   'Food & Beverage': 'pi-apple',
   Shopping: 'pi-shopping-bag',
@@ -44,6 +50,7 @@ function VoucherCategory() {
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const toast = useRef(null);
+  const navigate = useNavigate();
 
   const breadcrumbItems = [
     { label: 'Categories' },
@@ -101,8 +108,18 @@ function VoucherCategory() {
             </span>
             <nav className="home-nav hidden lg:flex gap-3">
               {navItems.map((item, index) => (
-                <a key={item} href="/" className={`home-nav__link${index === 1 ? ' is-active' : ''}`}>
-                  {item}
+                <a 
+                  key={item.label} 
+                  href={item.path !== '#' ? '#' : undefined}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (item.path !== '#') {
+                      navigate(item.path);
+                    }
+                  }}
+                  className={`home-nav__link${index === 1 ? ' is-active' : ''}`}
+                >
+                  {item.label}
                 </a>
               ))}
             </nav>

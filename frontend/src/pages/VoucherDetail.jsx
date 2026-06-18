@@ -10,7 +10,12 @@ import { Toast } from 'primereact/toast';
 import { BreadCrumb } from 'primereact/breadcrumb';
 import './Home.css';
 
-const navItems = ['Explore', 'Deals', 'Rewards', 'Wallet'];
+const navItems = [
+  { label: 'Explore', path: '/Home' },
+  { label: 'Deals', path: '/voucher-category' },
+  { label: 'Rewards', path: '#' },
+  { label: 'Wallet', path: '#' }
+];
 
 const profileImage =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuCBSuIxUxfHg4wgNs3r-LO4qo6VNboOmg9Kb3aXO51jImuiyOFvXuTrd1wLc7zuGzCYjXZ5uW-DcC-AM0Dx6_HcT74tKyPAwBRGp9jf4ENR6pu1lD2E_6w-CWtUcsf33qMmCjPjGRar-Zs9Ux64NQXcqqYWPA6KLkOYxYtkNHGbhGV1nufUeRWL1bJjpYyc06lh1E3ZH_apHor12onMvLgo1q_GTHEL_AAjC1AMDXJ4yvYmKVbneaw-U35QqqQp0k0tHC7X_odbbPf5';
@@ -78,8 +83,20 @@ function VoucherDetail() {
               Carter Redeem
             </span>
             <nav className="home-nav hidden lg:flex gap-3">
-              {navItems.map((item) => (
-                <a key={item} href="/Home" className="home-nav__link">{item}</a>
+              {navItems.map((item, index) => (
+                <a 
+                  key={item.label} 
+                  href={item.path !== '#' ? '#' : undefined}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (item.path !== '#') {
+                      navigate(item.path);
+                    }
+                  }}
+                  className="home-nav__link"
+                >
+                  {item.label}
+                </a>
               ))}
             </nav>
           </div>

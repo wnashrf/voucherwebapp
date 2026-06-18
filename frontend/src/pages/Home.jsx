@@ -11,7 +11,12 @@ import { Message } from 'primereact/message';
 import { getVouchers } from '../api/vouchers';
 import './Home.css';
 
-const navItems = ['Explore', 'Deals', 'Rewards', 'Wallet'];
+const navItems = [
+  { label: 'Explore', path: '/Home' },
+  { label: 'Deals', path: '/voucher-category' },
+  { label: 'Rewards', path: '#' },
+  { label: 'Wallet', path: '#' }
+];
 
 // Map backend category names to PrimeIcons
 const categoryIcons = {
@@ -116,11 +121,17 @@ function Home() {
             <nav className="home-nav hidden lg:flex gap-3">
               {navItems.map((item, index) => (
                 <a
-                  key={item}
-                  href="#main-content"
+                  key={item.label}
+                  href={item.path !== '#' ? '#' : undefined}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (item.path !== '#') {
+                      navigate(item.path);
+                    }
+                  }}
                   className={`home-nav__link${index === 0 ? ' is-active' : ''}`}
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
             </nav>
@@ -246,7 +257,11 @@ function Home() {
             <div className="grid">
               {trendingVouchers.map((voucher, index) => (
                 <div className="col-12 md:col-6 lg:col-3" key={voucher._id}>
-                  <Card className="home-voucher h-full">
+                  <Card 
+                    className="home-voucher h-full"
+                    onClick={() => navigate('/voucher-detail', { state: { voucher } })}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <div className="home-voucher__image-wrap">
                       <img
                         alt={voucher.title}
